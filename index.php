@@ -41,6 +41,7 @@
     ];
 
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -50,6 +51,35 @@
     <title>Hotel Filter</title>
 </head>
 <body>
-    <h1>il mio lavoro</h1>
+    <div class="container">
+        <div class="row">
+            <h2>filtri</h2>
+        </div>
+        <div class="row">
+
+            <table class="table">
+              <thead>
+              
+                <tr>
+                  <th scope="col">Nome Hotel</th>
+                  <th scope="col">Descrizione</th>
+                  <th scope="col">Parcheggio</th>
+                  <th scope="col">Disanza dal centro</th>
+                </tr>
+                
+              </thead>
+              <tbody>
+              <?php foreach($hotels as $hotel): ?>
+                <tr>
+                  <th scope="row"><?php echo $hotel['name'] ?></th>
+                  <td><?php echo $hotel['description'] ?></td>
+                  <td><?php echo $hotel['parking'] ? 'si' : 'no' ?></td>
+                  <td><?php echo $hotel['distance_to_center'] ?> km</td>
+                </tr>
+                <?php endforeach; ?>
+              </tbody>
+            </table>
+        </div>
+    </div>
 </body>
 </html>
