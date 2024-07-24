@@ -42,33 +42,34 @@
     
     $hotelFiltred = array_filter($hotels, function ($hotel) {
       $data = $_GET;
+      // se data è valorizzato
       if(count($data)){
+        // booleano input utente
+        $putParkingFilter = array_key_exists('parcheggio', $data);
+        $putVotoFilter = array_key_exists('voto', $data);
         // se data ha dei dati ho tre opzioni 
-        if(array_key_exists('parcheggio', $data) && !array_key_exists('voto', $data)){
+        if($putParkingFilter && !$putVotoFilter){
 
           return $hotel['parking'];
 
-        }elseif(array_key_exists('parcheggio', $data) && array_key_exists('voto', $data)){
+        }elseif($putParkingFilter && $putVotoFilter){
 
           return $hotel['parking'] && $hotel['vote'] >= $data['voto'];
 
         }else{
 
           return $hotel['vote'] >= $data['voto'];
-          
-        };
-       
 
-        var_dump($data);
-        
+        };
+
       }else{
         // se data è vuoto ritorno tutti gli hotel
-        return $hotel;
-      }
+        return true;
+      };
       
     });
 
-// array(2) { ["parcheggio"]=> string(2) "on" ["voto2"]=> string(2) "on" } 
+
 
 
 ?>
@@ -123,19 +124,26 @@
                 <th scope="col">Descrizione</th>
                 <th scope="col">Parcheggio</th>
                 <th scope="col">Disanza dal centro</th>
+                <th scope="col">Voto</th>
               </tr>
               
             </thead>
             <tbody>
-            <?php foreach($hotelFiltred as $hotel): ?>
-              <tr>
-                <th scope="row"><?php echo $hotel['name'] ?></th>
-                <td><?php echo $hotel['description'] ?></td>
-                <td><?php echo $hotel['parking'] ? 'si' : 'no' ?></td>
-                <td><?php echo $hotel['distance_to_center'] ?> km</td>
-                <td><?php echo $hotel['vote'] ?>/5</td>
+            <?php if($hotelFiltred): ?>
+              <?php foreach($hotelFiltred as $hotel): ?>
+                <tr>
+                  <th scope="row"><?php echo $hotel['name'] ?></th>
+                  <td><?php echo $hotel['description'] ?></td>
+                  <td><?php echo $hotel['parking'] ? 'si' : 'no' ?></td>
+                  <td><?php echo $hotel['distance_to_center'] ?> km</td>
+                  <td><?php echo $hotel['vote'] ?>/5</td>
+                </tr>
+                <?php endforeach; ?>
+            <?php else:?>
+              <tr class="text-center">
+                <th class="text-danger" colspan="5">NESSUN RISULTATO TROVATO</th>
               </tr>
-              <?php endforeach; ?>
+            <?php endif;?>
             </tbody>
           </table>
       </div>
