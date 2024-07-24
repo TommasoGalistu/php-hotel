@@ -40,38 +40,19 @@
 
     ];
     
-    $hotelFiltred = array_filter($hotels, function ($hotel) {
-      $data = $_GET;
-      // se data è valorizzato
-      if(count($data)){
-        // booleano input utente
-        $putParkingFilter = array_key_exists('parcheggio', $data);
-        $putVotoFilter = array_key_exists('voto', $data);
-        // se data ha dei dati ho tre opzioni 
-        if($putParkingFilter && !$putVotoFilter){
-
-          return $hotel['parking'];
-
-        }elseif($putParkingFilter && $putVotoFilter){
-
-          return $hotel['parking'] && $hotel['vote'] >= $data['voto'];
-
-        }else{
-
-          return $hotel['vote'] >= $data['voto'];
-
-        };
-
-      }else{
-        // se data è vuoto ritorno tutti gli hotel
-        return true;
-      };
-      
-    });
-
-
-
-
+    $data = $_GET;
+    $hotelFiltred = $hotels;
+    if(isset($data['parcheggio'])){
+      $hotelFiltred = array_filter($hotelFiltred, function ($hotel) {
+        return $hotel['parking'];
+      });
+    }
+    if(isset($data['voto'])){
+      $hotelFiltred = array_filter($hotelFiltred, function ($hotel) use ($data) {
+        return $hotel['vote'] >= $data['voto'];
+      });
+    }
+  
 ?>
 
 <!DOCTYPE html>
